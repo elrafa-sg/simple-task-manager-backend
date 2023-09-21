@@ -31,6 +31,19 @@ export class TarefaController {
         }
     }
 
+    public async atualizarTarefa (req: any, res: any) {
+        const tarefaDao = Tarefa(sequelize)
+
+        try {
+            const tarefa = await tarefaDao.findByPk(req.body.id);
+            tarefa?.update(req.body)
+
+            return res.status(200).json(tarefa)
+        } catch (error: any) {
+            return res.status(500).json(error)
+        }
+    }
+
     public async deletarTarefa (req: any, res: any) {
         const tarefaDao = Tarefa(sequelize)
 
