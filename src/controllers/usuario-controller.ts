@@ -31,5 +31,24 @@ export class UsuarioController {
             return res.status(500).json(error)
         }
     }
+
+    public async signup (req: any, res: any) {
+        const { nome, senha, email } = req.body
+
+        const usuarioDao = Usuario(sequelize)
+
+        try {
+            const usuario = await usuarioDao.create({
+                nome: nome,
+                email: email,
+                senha: senha
+            })
+            usuario.dataValues.senha = null
+
+            return res.status(200).json(usuario)
+        } catch (error: any) {
+            return res.status(500).json(error)
+        }
+    }
 }
 
