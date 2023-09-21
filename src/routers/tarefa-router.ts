@@ -7,5 +7,6 @@ const tarefa = new TarefaController()
 
 app.get('/', tarefa.listarTarefas)
 app.post('/', tarefa.cadastrarTarefa)
+app.delete('/', tarefa.deletarTarefa)
 
 export default app
