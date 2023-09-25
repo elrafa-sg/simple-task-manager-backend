@@ -36,7 +36,12 @@ export class TarefaController {
 
         try {
             const tarefa = await tarefaDao.findByPk(req.body.id);
-            tarefa?.update(req.body)
+            tarefa?.update({
+                titulo: req.body.titulo,
+                descricao: req.body.descricao,
+                vencimento: req.body.vencimento,
+                prioridade: req.body.prioridade
+            })
 
             return res.status(200).json(tarefa)
         } catch (error: any) {
