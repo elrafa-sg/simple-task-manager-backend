@@ -13,10 +13,22 @@ module.exports = (sequelize) => {
   }
   Tarefa.init(
     {
-      titulo: DataTypes.STRING,
-      descricao: DataTypes.STRING,
-      vencimento: DataTypes.DATE,
-      prioridade: DataTypes.INTEGER,
+      titulo: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      descricao: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      vencimento: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      prioridade: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       sequelize,
