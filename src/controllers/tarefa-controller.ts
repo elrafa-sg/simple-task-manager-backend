@@ -1,6 +1,7 @@
 import Tarefa from '../../models/tarefa'
 
 import { sequelize } from '../../models'
+import { GoogleCalendar } from '../helpers/googleCalendar'
 
 export class TarefaController {
     public listarTarefas (req: any, res: any) {
@@ -22,10 +23,28 @@ export class TarefaController {
     public cadastrarTarefa (req: any, res: any) {
         try {
             const tarefaDao = Tarefa(sequelize)
+            const googleCalendar = new GoogleCalendar(req.body.googleCalendarToken)
 
-            const tarefa = tarefaDao.build(req.body)
+            const tarefa = tarefaDao.build(req.body.tarefa)
             tarefa.save()
-                .then(novaTarefa => res.status(200).json(novaTarefa))
+                .then(async novaTarefa => {
+                    await googleCalendar.criarCalendario()
+                    const idCalendario = await googleCalendar.obterIdCalendario()
+                    googleCalendar.inserirEventoNoCalendario(idCalendario, {
+                        titulo: novaTarefa.dataValues.titulo,
+                        descricao: novaTarefa.dataValues.descricao,
+                        vencimento: novaTarefa.dataValues.vencimento
+                    })
+                        .then((eventoInserido) => {
+                            // todo - inserir id do evento na tabela de tarefas
+                            //eventoInserido.data.id
+                            res.status(200).json({ message: 'Tarefa criada com sucesso!' })
+                        })
+                        .catch(() => {
+                            novaTarefa.destroy()
+                            res.status(400).json({ message: 'Erro ao criar a tarefa!' })
+                        })
+                })
                 .catch(() => res.status(400).json({ message: 'Erro ao criar a tarefa!' }))
         } catch (error: any) {
             console.warn('erro', error)
