@@ -1,7 +1,7 @@
 import Tarefa from '../../models/tarefa'
 
 import { sequelize } from '../../models'
-import { GoogleCalendar } from '../helpers/googleCalendar'
+import { GoogleCalendar } from '../helpers/google-calendar'
 
 export class TarefaController {
     public listarTarefas (req: any, res: any) {
