@@ -94,7 +94,27 @@ class GoogleCalendar {
             .catch(erroGoogleInsert => erroGoogleInsert)
     }
 
+    async atualizarEventoNoCalendario (
+        idCalendario: string, idEvento: string,
+        dadosEvento: { titulo: string, descricao: string, vencimento: string }
+    ) {
 
+        const novoEvento = new EventoGoogleCalendar(dadosEvento.titulo, dadosEvento.descricao, dadosEvento.vencimento)
+        this.googleCalendar.events.update(
+            {
+                calendarId: idCalendario,
+                eventId: idEvento,
+                requestBody: novoEvento
+            })
+            .then(eventoAtualizado => eventoAtualizado)
+            .catch(erroAtualizarEvento => erroAtualizarEvento)
+    }
+
+    async excluirEventoNoCalendario (idCalendario: string, idEvento: string) {
+        this.googleCalendar.events.delete({ calendarId: idCalendario, eventId: idEvento })
+            .then(deleteResponse => deleteResponse)
+            .catch(errorResponse => errorResponse)
+    }
 }
 
 export { GoogleCalendar }
