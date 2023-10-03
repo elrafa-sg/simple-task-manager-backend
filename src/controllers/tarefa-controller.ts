@@ -4,14 +4,17 @@ import { sequelize } from '../../models'
 import { GoogleCalendar } from '../helpers/google-calendar'
 
 export class TarefaController {
-    public listarTarefas (req: any, res: any) {
+    public async listarTarefas (req: any, res: any) {
         try {
             const tarefaDao = Tarefa(sequelize)
-            tarefaDao.findAll()
-                .then(listaTarefas => res.status(200).json(listaTarefas))
-                .catch(() => res.status(400).json({ message: 'Erro ao obter lista de tarefas!' }))
 
-
+            const listaTarefas = await tarefaDao.findAll({ where: { 'idUsuario': req.body.idUsuario } })
+            if (listaTarefas) {
+                res.status(200).json(listaTarefas)
+            }
+            else {
+                res.status(400).json({ message: 'Erro ao obter lista de tarefas!' })
+            }
         } catch (error: any) {
             console.warn('erro', error)
             return res.status(500).json({ message: 'Ocorreu um erro ao processar sua requisição. Tente novamente mais tarde!' })
@@ -23,7 +26,10 @@ export class TarefaController {
             const tarefaDao = Tarefa(sequelize)
             const googleCalendar = new GoogleCalendar(req.body.googleCalendarToken)
 
-            const tarefa = tarefaDao.build(req.body.tarefa)
+            const tarefa = tarefaDao.build({
+                ...req.body.tarefa,
+                idUsuario: req.body.idUsuario
+            })
             const novaTarefa = await tarefa.save()
             if (novaTarefa) {
                 try {
@@ -65,6 +71,10 @@ export class TarefaController {
 
             const tarefa = await tarefaDao.findByPk(req.body.tarefa.id)
                 .catch(() => { return res.status(404).json({ message: 'Tarefa não encontrada!' }) })
+
+            if (tarefa.idUsuario != req.body.idUsuario) {
+                return res.status(403).json({ message: 'Você não pode alterar esta tarefa!' })
+            }
 
             const oldValues = { ...tarefa?.dataValues }
             if (tarefa) {
@@ -118,6 +128,10 @@ export class TarefaController {
             const tarefa: any = await tarefaDao.findByPk(req.body.tarefa.id)
                 .catch(() => { return res.status(404).json({ message: 'Tarefa não encontrada!' }) })
 
+            if (tarefa.idUsuario != req.body.idUsuario) {
+                return res.status(403).json({ message: 'Você não pode deletar esta tarefa!' })
+            }
+
             if (tarefa) {
                 const idCalendario = await googleCalendar.obterIdCalendario()
                 const idEvento = tarefa.dataValues.googleCalendarEventId
@@ -140,4 +154,3 @@ export class TarefaController {
         }
     }
 }
-
