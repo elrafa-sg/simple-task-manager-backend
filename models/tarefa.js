@@ -29,6 +29,12 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      idUsuario: {
+        type: DataTypes.STRING,
+      },
+      googleCalendarEventId: {
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,
