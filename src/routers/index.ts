@@ -5,7 +5,11 @@ import tarefaRoutes from './tarefa-router'
 
 const router = express.Router()
 
-router.use('/usuario', usuarioRoutes)
-router.use('/tarefa', tarefaRoutes)
+router.use('/usuario', usuarioRoutes
+    //  #swagger.tags = ['Usuario'] 
+)
+router.use('/tarefa', tarefaRoutes
+    //  #swagger.tags = ['Tarefa'] 
+)
 
 export default router
