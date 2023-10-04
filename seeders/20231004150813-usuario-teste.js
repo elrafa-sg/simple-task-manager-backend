@@ -12,6 +12,14 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        id: 2,
+        nome: 'Maria Foo',
+        senha: 'segredoparticular',
+        email: 'mariafoo@emaildomain.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 

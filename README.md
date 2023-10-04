@@ -47,7 +47,7 @@ Gerenciador de tarefas integrado ao google calendar.
 
 #### \* Certifique-se de ter o [Node.js](https://nodejs.org/) instalado.
 
-#### \*\* Antes de executar o projeto, versão teste ou produção, certifique-se de preencher as variáveis de ambiente no arquivo /src/config.ts
+#### \*\* Antes de executar o projeto, versão teste ou produção, certifique-se de preencher as variáveis de ambiente no arquivo .env.exemplo e renomeá-lo para .env
 
 ## Documentação da API:
 
