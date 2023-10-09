@@ -11,7 +11,7 @@ export class TarefaController {
 
             let listaTarefas
 
-            if (dataInicial != '' && dataFinal != '') {
+            if (dataInicial && dataFinal) {
                 listaTarefas = await tarefaDao.findAll({
                     where:
                     {
