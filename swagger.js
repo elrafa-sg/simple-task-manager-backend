@@ -16,7 +16,7 @@ const doc = {
       updatedAt: '',
     },
     UsuarioLogin: {
-      $nome: '',
+      $email: '',
       $senha: '',
     },
     UsuarioToken: {
