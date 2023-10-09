@@ -25,7 +25,6 @@ app.get('/', authMiddleware, tarefa.listarTarefas
         #swagger.responses[500] = {
             schema: { $ref: '#/definitions/RespostaPadrao' }
         }
-
     */
 )
 app.post('/', authMiddleware, tarefa.cadastrarTarefa

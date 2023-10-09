@@ -1,15 +1,41 @@
 import Tarefa from '../../models/tarefa'
 
-import { sequelize } from '../../models'
+import { sequelize, Sequelize } from '../../models'
 import { GoogleCalendar } from '../helpers/google-calendar'
 
 export class TarefaController {
     public async listarTarefas (req: any, res: any) {
         try {
             const tarefaDao = Tarefa(sequelize)
+            const { dataInicial, dataFinal, prioridade } = req.query
 
-            const listaTarefas = await tarefaDao.findAll({ where: { 'idUsuario': req.body.idUsuario } })
+            let listaTarefas
+
+            if (dataInicial && dataFinal) {
+                listaTarefas = await tarefaDao.findAll({
+                    where:
+                    {
+                        idUsuario: req.body.idUsuario,
+                        vencimento: {
+                            [Sequelize.Op.between]: [new Date(dataInicial), new Date(dataFinal)]
+                        }
+                    }
+                })
+            }
+            else {
+                listaTarefas = await tarefaDao.findAll({
+                    where:
+                    {
+                        idUsuario: req.body.idUsuario,
+                    }
+                })
+            }
+
             if (listaTarefas) {
+                // filtrar prioridade
+                listaTarefas = listaTarefas
+                    .filter(tarefa => prioridade == '' || tarefa.dataValues.prioridade == prioridade)
+
                 res.status(200).json(listaTarefas)
             }
             else {
