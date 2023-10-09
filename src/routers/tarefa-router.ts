@@ -9,6 +9,16 @@ const tarefa = new TarefaController()
 
 app.get('/', authMiddleware, tarefa.listarTarefas
     /*
+        #swagger.parameters['dataInicial'] = {
+            in: 'query'
+        }
+        #swagger.parameters['dataFinal'] = {
+            in: 'query'
+        }
+        #swagger.parameters['prioridade'] = {
+            in: 'query'
+        }
+
         #swagger.responses[200] = {
             schema: { $ref: '#/definitions/ListaTarefas' }
         }

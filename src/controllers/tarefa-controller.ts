@@ -8,7 +8,7 @@ export class TarefaController {
         try {
             const tarefaDao = Tarefa(sequelize)
             const { dataInicial, dataFinal, prioridade } = req.query
-
+            
             let listaTarefas
 
             if (dataInicial && dataFinal) {
@@ -34,7 +34,7 @@ export class TarefaController {
             if (listaTarefas) {
                 // filtrar prioridade
                 listaTarefas = listaTarefas
-                    .filter(tarefa => prioridade == '' || tarefa.dataValues.prioridade == prioridade)
+                    .filter(tarefa => !prioridade || tarefa.dataValues.prioridade == prioridade)
 
                 res.status(200).json(listaTarefas)
             }
